@@ -1,0 +1,10 @@
+
+
+network={ ssid='' psk='' }
+network={ ssid="" psk="" }
+network={ ssid="" psk="" }
+network={ ssid="WIFI" psk="PASSWORD" }
+### BEGIN FATHOM NETWORK ### network={ ssid="WIFI" psk="PASSWORD" } ### END FATHOM NETWORK ###
+### BEGIN FATHOM NETWORK ###
+ network={ ssid="WIFI" psk="PASSWORD" } 
+### END FATHOM NETWORK ###

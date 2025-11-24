@@ -1,0 +1,108 @@
+<html>
+  <head>
+    {% if title %}
+    <title>{{ title }} - Fathom </title>
+    {% else %}
+    <title>Welcome to Fathom</title>
+    {% endif %}
+      <!-- Bootstrap -->
+      <link href="{{ url_for('static',filename='styles/bootstrap.min.css') }}" rel="stylesheet">
+      <script src="{{ url_for('static',filename='scripts/jquery-3.1.1.min.js') }}"></script>
+  </head>
+  <body style="">
+      {% block content %}
+      <div class="row" style="background-color:#000000;color:#ffffff;height:50px;padding-top:10px;">
+          <div class="col-xs-12">
+              &nbsp;&nbsp;&nbsp;&nbsp;<img src="{{ url_for('static',filename='FathomWhiteColor.png') }}" height="30px"/>
+          </div>
+      </div>
+      <div class="container">
+          <div class="row">
+              <div class="col-xs-12">
+                  <h1>Video Manager</h1>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-xs-12">
+                  <p class="lead">
+                      Use this portal to manage your videos
+                  </p>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-xs-12">
+                  <span class="btn btn-primary pull-right" onclick="convertVideos()">Convert videos</span>
+              </div>
+          </div>
+          <br/>
+          <div class="row">
+              <div class="col-xs-12">
+                  <table class="table">
+                      <tr>
+                          <th>Date</th>
+                          <th>Time</th>
+                          <th>Location</th>
+                          <th>Format</th>
+
+                          <th>Manage</th>
+                      </tr>
+                      {% for video in flight_records|sort(attribute='full_time',reverse=True) %}
+                      <tr>
+                          <td>
+                              {{ video.when }}
+                          </td>
+                          <td>
+                              {{ video.start_time }}
+                          </td>
+                          <td>
+                              {{ video.latitude }},{{ video.longitude }}
+                          </td>
+                          <td>
+                              {% if ".h264" in video.name %} H264
+                              {% else %}
+                               MP4
+                              {% endif %}
+                          </td>
+
+                          <!--td>
+                              {{ video.end_time }}
+                          </td-->
+                          <td>
+                              <a class="glyphicon glyphicon-download" href="{{ url_for('static',filename='recordings/'+video.name) }}" download></a>
+                              <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                              <span class="glyphicon glyphicon-trash text-danger" onclick="deleteVideo('{{video.name}}')"></span>
+                          </td>
+                      </tr>
+                      {% endfor %}
+
+
+                  </table>
+              </div>
+          </div>
+
+      </div>
+
+
+
+
+
+
+      {% endblock %}
+  <script>
+      function convertVideos(){
+        $.get( "/convert/all", function( data ) {
+            $( ".result" ).html( data );
+            alert( "Converting videos. Please refresh the page to check conversion progress." );
+       });
+      }
+
+      function deleteVideo(video){
+        $.get( "/flights/recordings/delete?rec="+video, function( data ) {
+            $( ".result" ).html( data );
+            location.reload();
+       });
+      }
+
+  </script>
+  </body>
+</html>
